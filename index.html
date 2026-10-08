@@ -19,24 +19,27 @@
       --surface: #fff;
       --page: #fff;
       --content: 1120px;
+      --promo-height: 76px;
     }
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; scroll-padding-top: 150px; }
-    body { margin: 0; background: var(--page); color: var(--text); font-family: Poppins, Arial, sans-serif; }
+    body { margin: 0; padding-top: var(--promo-height); background: var(--page); color: var(--text); font-family: Poppins, Arial, sans-serif; }
     button, input { font: inherit; }
-    .promo { min-height: 76px; padding: 14px 24px; display: flex; align-items: center; justify-content: center; gap: 24px; background: #f4f4f4; color: #252525; font-size: 14px; }
-    .promo strong { font-weight: 700; }
-    .promo-tag { color: var(--purple); font-weight: 700; letter-spacing: .02em; }
-    .promo a { color: #1267db; font-weight: 700; white-space: nowrap; }
+    .promo { position: fixed; top: 0; left: 0; right: 0; z-index: 20; height: var(--promo-height); min-height: var(--promo-height); padding: 14px 24px; display: flex; align-items: center; justify-content: center; gap: 28px; background: #f4f4f4; color: #252525; box-shadow: 0 2px 8px #00000012; }
+    .promo-brand { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+    .promo-mark { display: block; width: 40px; height: 40px; flex: 0 0 40px; }
+    .promo-wordmark { font-size: 16px; font-weight: 600; letter-spacing: -.03em; }
+    .promo-wordmark b { color: var(--purple); font-weight: 800; }
     .hero { min-height: 210px; padding: 20px 22px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; background: linear-gradient(#ffffffa8,#ffffffc7), url('assets/fundo.webp') center 48% / cover no-repeat; }
     .logo { display: block; width: 210px; height: 110px; object-fit: contain; }
+    .brand-watermark { position: fixed; top: 55%; left: 50%; transform: translate(-50%, -50%); z-index: 9; width: clamp(210px, 40vw, 380px); height: auto; object-fit: contain; opacity: .1; mix-blend-mode: multiply; pointer-events: none; user-select: none; }
     .identity { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
     .identity h1 { margin: 0; font-size: clamp(19px, 3vw, 25px); font-weight: 700; }
     .status { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; border: 1px solid #e8d6b9; border-radius: 999px; background: #fffaf0; font-size: 12px; }
     .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #d89224; }
     .status small { color: #777; }
     .info-link { margin-top: 2px; color: #444; font-size: 12px; }
-    .nav-shell { position: sticky; top: 0; z-index: 10; background: #fffffff2; border-block: 1px solid var(--line); backdrop-filter: blur(9px); }
+    .nav-shell { position: sticky; top: var(--promo-height); z-index: 11; background: #fffffff2; border-block: 1px solid var(--line); backdrop-filter: blur(9px); }
     .nav { max-width: var(--content); margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 8px; overflow-x: auto; scrollbar-width: thin; }
     .nav a { flex: 0 0 auto; padding: 9px 12px; border-radius: 999px; color: #242424; text-decoration: none; font-size: 12px; font-weight: 700; white-space: nowrap; }
     .nav a:hover, .nav a:focus-visible { background: #eaffea; outline: none; }
@@ -65,10 +68,14 @@
     .cart-toast.visible { transform: translate(-50%, 0); }
     .disclaimer { display: block; margin-top: 7px; color: #8b8b8b; }
     @media (max-width: 700px) {
-      .promo { min-height: 58px; gap: 10px; padding: 10px 12px; font-size: 11px; }
-      .promo-tag { display: none; }
+      :root { --promo-height: 58px; }
+      .promo { gap: 12px; padding: 9px 12px; }
+      .promo-brand { gap: 7px; }
+      .promo-mark { width: 32px; height: 32px; flex-basis: 32px; }
+      .promo-wordmark { font-size: 13px; }
       .hero { min-height: 190px; }
       .logo { width: 180px; height: 95px; }
+      .brand-watermark { width: min(70vw, 280px); opacity: .09; }
       .nav { padding-inline: 10px; gap: 3px; }
       .nav a { padding: 8px 10px; font-size: 11px; }
       .nav .search-wrap { margin-left: 0; }
@@ -83,7 +90,17 @@
   </style>
 </head>
 <body>
-  <div class="promo"><span class="promo-tag">AÇAÍ HOUSE</span><span><strong>Cardápio digital</strong> · escolha seu açaí ou sorvete</span><a href="#cardapio">Ver cardápio ↓</a></div>
+  <div class="promo">
+    <div class="promo-brand">
+      <svg class="promo-mark" viewBox="0 0 40 40" role="img" aria-label="Símbolo de cardápio">
+        <rect width="40" height="40" rx="12" fill="#553e93"/>
+        <path d="M12 11h16M12 17h16M12 23h10" fill="none" stroke="#fff" stroke-linecap="round" stroke-width="2.5"/>
+        <circle cx="27" cy="27" r="6" fill="#29f329"/>
+        <path d="m24.5 27 1.7 1.7 3.4-3.7" fill="none" stroke="#19521b" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.7"/>
+      </svg>
+      <span class="promo-wordmark">Cardápio <b>Digital</b></span>
+    </div>
+  </div>
 
   <header class="hero">
     <img class="logo" src="assets/logo.webp" alt="Logo Açaí House">
@@ -126,6 +143,7 @@
   <div class="notice" id="informacao">A página é uma demonstração estática: os botões “+” só contam itens neste navegador e não enviam pedidos.</div>
   <footer>Cardápio demonstrativo independente.<span class="disclaimer">Logo e fotografias pertencem aos respectivos titulares; obtenha autorização antes de publicar uma cópia comercial.</span></footer>
   <div class="cart-toast" id="cartToast" role="status" aria-live="polite">0 itens adicionados nesta demonstração</div>
+  <img class="brand-watermark" src="assets/logo.webp" alt="" aria-hidden="true">
 
   <script>
     // Dados transcritos da página pública consultada; as imagens ficam na pasta assets/.
