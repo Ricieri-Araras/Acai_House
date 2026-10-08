@@ -1,24 +1,212 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Réplica demonstrativa de um cardápio digital de açaí.">
+  <title>Açaí House — cardápio demonstrativo</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --green: #29f329;
+      --green-dark: #078a16;
+      --purple: #553e93;
+      --text: #181818;
+      --muted: #777;
+      --line: #e8e8e8;
+      --surface: #fff;
+      --page: #fff;
+      --content: 1120px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-padding-top: 150px; }
+    body { margin: 0; background: var(--page); color: var(--text); font-family: Poppins, Arial, sans-serif; }
+    button, input { font: inherit; }
+    .promo { min-height: 76px; padding: 14px 24px; display: flex; align-items: center; justify-content: center; gap: 24px; background: #f4f4f4; color: #252525; font-size: 14px; }
+    .promo strong { font-weight: 700; }
+    .promo-tag { color: var(--purple); font-weight: 700; letter-spacing: .02em; }
+    .promo a { color: #1267db; font-weight: 700; white-space: nowrap; }
+    .hero { min-height: 210px; padding: 20px 22px 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; background: linear-gradient(#ffffffa8,#ffffffc7), url('assets/fundo.webp') center 48% / cover no-repeat; }
+    .logo { display: block; width: 210px; height: 110px; object-fit: contain; }
+    .identity { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+    .identity h1 { margin: 0; font-size: clamp(19px, 3vw, 25px); font-weight: 700; }
+    .status { display: inline-flex; align-items: center; gap: 7px; padding: 6px 11px; border: 1px solid #e8d6b9; border-radius: 999px; background: #fffaf0; font-size: 12px; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: #d89224; }
+    .status small { color: #777; }
+    .info-link { margin-top: 2px; color: #444; font-size: 12px; }
+    .nav-shell { position: sticky; top: 0; z-index: 10; background: #fffffff2; border-block: 1px solid var(--line); backdrop-filter: blur(9px); }
+    .nav { max-width: var(--content); margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 8px; overflow-x: auto; scrollbar-width: thin; }
+    .nav a { flex: 0 0 auto; padding: 9px 12px; border-radius: 999px; color: #242424; text-decoration: none; font-size: 12px; font-weight: 700; white-space: nowrap; }
+    .nav a:hover, .nav a:focus-visible { background: #eaffea; outline: none; }
+    .nav a.active { background: var(--green); }
+    .nav .search-wrap { margin-left: auto; display: flex; flex: 0 0 auto; align-items: center; gap: 7px; }
+    .search-wrap input { width: 0; max-width: 190px; padding: 0; border: 0; outline: 0; transition: width .2s ease; }
+    .search-wrap.open input { width: 160px; padding: 7px 10px; border: 1px solid var(--line); border-radius: 999px; }
+    .icon-button { width: 36px; height: 36px; border: 1px solid var(--line); border-radius: 50%; background: #fff; cursor: pointer; }
+    main { max-width: var(--content); margin: 0 auto; padding: 18px 18px 70px; }
+    .category { padding-top: 12px; margin-bottom: 32px; }
+    .category h2 { margin: 0 0 12px; font-size: 18px; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px 18px; }
+    .card { min-height: 110px; display: flex; align-items: stretch; overflow: hidden; border: 1px solid #ededed; border-radius: 9px; background: var(--surface); box-shadow: 0 1px 3px #0000000b; }
+    .card-copy { min-width: 0; flex: 1; padding: 12px 10px 10px 13px; display: flex; flex-direction: column; align-items: flex-start; }
+    .card h3 { margin: 0; font-size: 14px; line-height: 1.35; font-weight: 600; }
+    .description { margin-top: 4px; color: #777; font-size: 10px; line-height: 1.4; }
+    .price { margin-top: auto; padding-top: 9px; font-size: 13px; font-weight: 700; }
+    .card-image { position: relative; flex: 0 0 104px; min-height: 110px; background: #f6f4f2; }
+    .card-image img { width: 100%; height: 100%; min-height: 110px; position: absolute; inset: 0; object-fit: cover; }
+    .add { position: absolute; right: 7px; bottom: 7px; width: 32px; height: 32px; border: 0; border-radius: 50%; background: var(--green); color: #064a0b; font-size: 24px; line-height: 1; cursor: pointer; box-shadow: 0 2px 7px #0003; }
+    .add:hover { transform: scale(1.06); }
+    .empty { display: none; padding: 34px 12px; text-align: center; color: var(--muted); }
+    .notice { max-width: var(--content); margin: 0 auto 22px; padding: 12px 18px; border-radius: 8px; background: #f8f6fb; color: #554775; text-align: center; font-size: 12px; }
+    footer { padding: 24px 18px; border-top: 1px solid var(--line); text-align: center; color: #777; font-size: 11px; }
+    .cart-toast { position: fixed; z-index: 20; left: 50%; bottom: 20px; transform: translate(-50%, 140%); padding: 12px 18px; border-radius: 999px; background: #222; color: white; font-size: 13px; box-shadow: 0 5px 25px #0003; transition: transform .2s ease; }
+    .cart-toast.visible { transform: translate(-50%, 0); }
+    .disclaimer { display: block; margin-top: 7px; color: #8b8b8b; }
+    @media (max-width: 700px) {
+      .promo { min-height: 58px; gap: 10px; padding: 10px 12px; font-size: 11px; }
+      .promo-tag { display: none; }
+      .hero { min-height: 190px; }
+      .logo { width: 180px; height: 95px; }
+      .nav { padding-inline: 10px; gap: 3px; }
+      .nav a { padding: 8px 10px; font-size: 11px; }
+      .nav .search-wrap { margin-left: 0; }
+      .search-wrap.open input { width: 110px; }
+      main { padding: 12px 12px 60px; }
+      .grid { grid-template-columns: 1fr; gap: 10px; }
+      .card { min-height: 102px; }
+      .card-image { flex-basis: 100px; min-height: 102px; }
+      .card-image img { min-height: 102px; }
+    }
+    @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+  </style>
+</head>
+<body>
+  <div class="promo"><span class="promo-tag">AÇAÍ HOUSE</span><span><strong>Cardápio digital</strong> · escolha seu açaí ou sorvete</span><a href="#cardapio">Ver cardápio ↓</a></div>
 
-    <title>Açaí house Araras</title>
-    <meta name="description" content="Página da Loja do Açaí House.">
+  <header class="hero">
+    <img class="logo" src="assets/logo.webp" alt="Logo Açaí House">
+    <div class="identity">
+      <h1>AÇAI HOUSE - Parque das Árvores</h1>
+      <span class="status"><span class="status-dot"></span><strong>Fechado</strong><small>· Pedir para depois</small></span>
+    </div>
+    <a class="info-link" href="#informacao">ⓘ Informação</a>
+  </header>
 
-    <link rel="stylesheet" href="estilos.css">
-    <link rel="icon" href="favicon.ico">
-  </head>
-  <body>
-    <h1>Benvindo à Loja Açaí House</h1>
-    <aside>
-        <h2>Promoções</h2>
-        <a href="">House Mix</a>
-        <img src="" alt=""/>
-        <p>Ingredientes</p>
+  <div class="nav-shell">
+    <nav class="nav" aria-label="Categorias do cardápio">
+      <div class="search-wrap" id="searchWrap">
+        <input id="searchInput" type="search" placeholder="Buscar produto" aria-label="Buscar produto">
+        <button class="icon-button" id="searchButton" type="button" aria-label="Abrir busca">⌕</button>
+      </div>
+      <a class="active" href="#combos">COMBOS</a>
+      <a href="#acai-puro">AÇAI PURO</a>
+      <a href="#sorvete">SORVETE</a>
+      <a href="#barca-de-acai">BARCA DE AÇAI</a>
+      <a href="#picole">PICOLÉ</a>
+      <a href="#delicinho">DELICINHO</a>
+      <a href="#sorvete-no-pote">SORVETE NO POTE</a>
+      <a href="#agua">ÁGUA</a>
+    </nav>
+  </div>
 
-    </aside>
+  <main id="cardapio">
+    <section class="category" id="combos"><h2>COMBOS</h2><div class="grid" data-category="combos"></div></section>
+    <section class="category" id="acai-puro"><h2>AÇAI PURO</h2><div class="grid" data-category="acai-puro"></div></section>
+    <section class="category" id="sorvete"><h2>SORVETE</h2><div class="grid" data-category="sorvete"></div></section>
+    <section class="category" id="barca-de-acai"><h2>BARCA DE AÇAI</h2><div class="grid" data-category="barca-de-acai"></div></section>
+    <section class="category" id="picole"><h2>PICOLÉ</h2><div class="grid" data-category="picole"></div></section>
+    <section class="category" id="delicinho"><h2>DELICINHO</h2><div class="grid" data-category="delicinho"></div></section>
+    <section class="category" id="sorvete-no-pote"><h2>SORVETE NO POTE</h2><div class="grid" data-category="sorvete-no-pote"></div><p class="empty">Nenhum produto apareceu nessa categoria na captura consultada.</p></section>
+    <section class="category" id="agua"><h2>ÁGUA</h2><div class="grid" data-category="agua"></div><p class="empty">Nenhum produto apareceu nessa categoria na captura consultada.</p></section>
+    <p class="empty" id="noResults">Nenhum produto encontrado com essa busca.</p>
+  </main>
 
-  </body>
+  <div class="notice" id="informacao">A página é uma demonstração estática: os botões “+” só contam itens neste navegador e não enviam pedidos.</div>
+  <footer>Cardápio demonstrativo independente.<span class="disclaimer">Logo e fotografias pertencem aos respectivos titulares; obtenha autorização antes de publicar uma cópia comercial.</span></footer>
+  <div class="cart-toast" id="cartToast" role="status" aria-live="polite">0 itens adicionados nesta demonstração</div>
+
+  <script>
+    // Dados transcritos da página pública consultada; as imagens ficam na pasta assets/.
+    const produtos = [
+      {categoria:'combos', nome:'HOUSE KIDS', descricao:'CONFETE, LEITE EM PÓ, COBERTURA DE MORANGOS E MORANGOS.', preco:'R$ 16,00', imagem:'607eebcb-0dd1-4b31-949c-20a96cb5406b.webp'},
+      {categoria:'combos', nome:'HOUSE TRADICIONAL', descricao:'BANANA, LEITE CONDENSADO, LEITE EM PÓ E PAÇOCA.', preco:'R$ 16,00', imagem:'9fe0c418-18a2-463f-a3fd-7f1755cca923.webp'},
+      {categoria:'combos', nome:'HOUSE DELICIA', descricao:'MORANGO, LEITE EM PÓ, LEITE CONDENSADO E GOTAS DE CHOCOLATE.', preco:'R$ 16,00', imagem:'e755952f-3d5a-414a-a922-6f01a0d26bb1.webp'},
+      {categoria:'combos', nome:'HOUSE MIX', descricao:'MORANGO, BANANA, LEITE EM PÓ E LEITE CONDENSADO.', preco:'R$ 16,00', imagem:'5235253b-073d-4576-a99a-8f94860dbdbd.webp'},
+      {categoria:'combos', nome:'HOUSE FITNESS', descricao:'MORANGO, UVA, BANANA E MEL.', preco:'R$ 16,00', imagem:'de21f30b-d9ef-48cb-98ca-875379408f08.webp'},
+      {categoria:'combos', nome:'HOUSE BLACK', descricao:'CALDA DE CHOCOLATE, GRANULADO, GOTAS DE CHOCOLATE E FLOCOS.', preco:'R$ 16,00', imagem:'fc9f2025-d537-4482-aa36-c62d158241d7.webp'},
+      {categoria:'combos', nome:'HOUSE ESQUENTA', descricao:'AMENDOIM, PAÇOCA, BANANA E COBERTURA DE MORANGO.', preco:'R$ 16,00', imagem:'8a15ea78-1de4-410f-aaae-abdf36625432.webp'},
+      {categoria:'acai-puro', nome:'400 ML', descricao:'', preco:'R$ 12,00', imagem:'c9df3c4e-da37-4678-8a8a-b1dd7914679e.webp'},
+      {categoria:'acai-puro', nome:'500 ML', descricao:'', preco:'R$ 14,00', imagem:'6ee8c504-cb79-4169-86cb-23eb49926220.webp'},
+      {categoria:'acai-puro', nome:'700 ML', descricao:'', preco:'R$ 16,00', imagem:'24a324e8-1445-4c3f-8cd5-f60c956952e5.webp'},
+      {categoria:'acai-puro', nome:'1 LITRO', descricao:'', preco:'R$ 24,00', imagem:'48558db6-8fb6-4731-8adc-1608133c486b.webp'},
+      {categoria:'sorvete', nome:'SORVETE NO COPO 1 BOLA', descricao:'', preco:'R$ 6,00', imagem:'886b659a-78cf-4463-ac89-32136ec996b6.webp'},
+      {categoria:'sorvete', nome:'SORVETE NO COPO 2 BOLA', descricao:'', preco:'R$ 9,00', imagem:'79b38383-9245-409a-b8b5-6e02061616cf.webp'},
+      {categoria:'sorvete', nome:'SORVETE NO COPO 3 BOLA', descricao:'', preco:'R$ 11,00', imagem:'ae96f28e-6fa4-411d-8ba0-26e549199260.webp'},
+      {categoria:'sorvete', nome:'SORVETE CESTINHA 1 BOLA', descricao:'', preco:'R$ 8,00', imagem:'95569499-9eb2-4f89-a225-20bad590d20e.webp'},
+      {categoria:'sorvete', nome:'SORVETE CESTINHA 2 BOLA', descricao:'', preco:'R$ 10,00', imagem:'3c1b4fbb-57f3-415d-9cbd-cf1e69da3662.webp'},
+      {categoria:'barca-de-acai', nome:'500 ML AÇAI + 7 ADICIONAIS', descricao:'AÇAÍ + 7 adicionais (Nutella).', preco:'R$ 40,00', imagem:'b4cbaf35-b87b-4bbf-8358-c066b8b02635.webp'},
+      {categoria:'barca-de-acai', nome:'1 LITRO', descricao:'AÇAÍ + 9 adicionais (Nutella).', preco:'R$ 60,00', imagem:'b66e86a8-ba3f-4c21-8ce4-8450b2a506ba.webp'},
+      {categoria:'barca-de-acai', nome:'1,5 LITRO', descricao:'AÇAÍ + 10 adicionais (Nutella).', preco:'R$ 70,00', imagem:'e236ee45-988e-4637-b790-27aecc3eceb8.webp'},
+      {categoria:'picole', nome:'PICOLÉ', descricao:'', preco:'', imagem:'6064f711-4db5-46c8-adea-37184b13fa47.webp'},
+      {categoria:'delicinho', nome:'DELICINHO', descricao:'', preco:'', imagem:'12cb9eb8-cd9c-4381-aa9a-a60b21081073.webp'},
+    ];
+
+    // Cria o cartão visual de cada produto a partir dos dados acima.
+    for (const produto of produtos) {
+      const lista = document.querySelector(`[data-category="${produto.categoria}"]`);
+      const cartao = document.createElement('article');
+      cartao.className = 'card';
+      cartao.dataset.search = `${produto.nome} ${produto.descricao}`.toLowerCase();
+      cartao.innerHTML = `
+        <div class="card-copy">
+          <h3>${produto.nome}</h3>
+          ${produto.descricao ? `<div class="description">${produto.descricao}</div>` : ''}
+          ${produto.preco ? `<div class="price">${produto.preco}</div>` : ''}
+        </div>
+        <div class="card-image">
+          <img src="assets/${produto.imagem}" alt="${produto.nome}" loading="lazy" width="132" height="132">
+          <button class="add" type="button" aria-label="Adicionar ${produto.nome}" title="Adicionar">+</button>
+        </div>`;
+      lista.append(cartao);
+    }
+
+    // A busca filtra os cartões localmente; não consulta o site original.
+    const campoBusca = document.getElementById('searchInput');
+    const cartaoVazio = document.getElementById('noResults');
+    campoBusca.addEventListener('input', () => {
+      const termo = campoBusca.value.trim().toLowerCase();
+      let visiveis = 0;
+      document.querySelectorAll('.card').forEach(card => {
+        const corresponde = card.dataset.search.includes(termo);
+        card.hidden = !corresponde;
+        if (corresponde) visiveis++;
+      });
+      document.querySelectorAll('.category').forEach(section => {
+        const temCartaoVisivel = [...section.querySelectorAll('.card')].some(card => !card.hidden);
+        section.hidden = termo.length > 0 && !temCartaoVisivel;
+      });
+      cartaoVazio.style.display = visiveis === 0 ? 'block' : 'none';
+    });
+
+    document.getElementById('searchButton').addEventListener('click', () => {
+      const wrap = document.getElementById('searchWrap');
+      wrap.classList.toggle('open');
+      if (wrap.classList.contains('open')) campoBusca.focus();
+      else { campoBusca.value = ''; campoBusca.dispatchEvent(new Event('input')); }
+    });
+
+    let itensNoCarrinho = 0;
+    const avisoCarrinho = document.getElementById('cartToast');
+    document.addEventListener('click', event => {
+      if (!event.target.matches('.add')) return;
+      itensNoCarrinho++;
+      avisoCarrinho.textContent = `${itensNoCarrinho} ${itensNoCarrinho === 1 ? 'item adicionado' : 'itens adicionados'} nesta demonstração`;
+      avisoCarrinho.classList.add('visible');
+      clearTimeout(window.avisoTimer);
+      window.avisoTimer = setTimeout(() => avisoCarrinho.classList.remove('visible'), 2200);
+    });
+  </script>
+</body>
 </html>
